@@ -36,10 +36,31 @@ export class Login {
       next: (res) => {
         console.log('Login success:', res);
         localStorage.setItem('jwt', res.token);
+        this.checkAdmin();
       },
       error: (err) => console.error('Login failed:', err)
     });
   }
+
+  checkAdmin(){
+      this.http.get("http://localhost:8000/admin/aggregate", {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+          }
+        }
+      ).subscribe({
+        next: (res) => {
+          console.log('Login success:', res);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          localStorage.removeItem('jwt');
+        }
+      })
+  }
+
+
 }
 
 //
