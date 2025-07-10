@@ -1,0 +1,12 @@
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 5vw;
+  width: 75%;
+  justify-self: center;
+}
+
+.chart {
+  flex-basis: 40%;
+}
