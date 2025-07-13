@@ -1,0 +1,5 @@
+@if(dataLoaded){
+  <p-chart type="bar" [data]="data" [options]="options" class="h-[30rem]" />
+} @else {
+  <p-progress-spinner ariaLabel="loading" class="w-full md:w-[30rem]"/>
+}
