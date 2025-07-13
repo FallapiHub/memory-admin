@@ -4,6 +4,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {ChartData} from '../../interfaces/chart-data';
 import {ScoreData} from '../../interfaces/score-data';
+import {ScoreService} from '../../services/score.service';
 
 
 @Component({
@@ -13,8 +14,6 @@ import {ScoreData} from '../../interfaces/score-data';
   styleUrl: './average-score-bars.css'
 })
 export class AverageScoreBars {
-  private apiUrl: string = 'http://localhost:8000/memory/scores';
-  private http: HttpClient = inject(HttpClient);
   dataLoaded: boolean = false;
 
 
@@ -45,12 +44,8 @@ export class AverageScoreBars {
   };
 
   fetchData(): void {
-    this.http.get(this.apiUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }
-    ).subscribe((res) => {
+    this.ScoreService.getAverageScores()
+    .subscribe((res) => {
       console.log(res);
       const scores: ScoreData[] = res as ScoreData[];
       this.data.labels = scores.map(entry => entry.username);
@@ -61,7 +56,7 @@ export class AverageScoreBars {
     })
   }
 
-  constructor() {
+  constructor(private ScoreService: ScoreService) {
     this.fetchData();
   }
 }

@@ -4,6 +4,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {ChartData} from '../../interfaces/chart-data';
 import {DateData} from '../../interfaces/date-data';
+import {DatesService} from '../../services/dates.service';
 
 
 @Component({
@@ -13,8 +14,6 @@ import {DateData} from '../../interfaces/date-data';
   styleUrl: './dates-chart.css'
 })
 export class DatesChart {
-  private apiUrl: string = 'http://localhost:8000/admin/dates';
-  private http: HttpClient = inject(HttpClient);
   dataLoaded: boolean = false;
 
 
@@ -43,13 +42,8 @@ export class DatesChart {
   };
 
   fetchData(): void {
-    this.http.get<DateData>(this.apiUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        }
-      }
-    ).subscribe((res) => {
+    this.DatesService.getDates()
+    .subscribe((res) => {
       console.log(res);
       this.data.labels = Object.keys(res);
       this.data.datasets[0].data = Object.values(res);
@@ -60,7 +54,7 @@ export class DatesChart {
     })
   }
 
-  constructor() {
+  constructor(private DatesService: DatesService) {
     this.fetchData();
   }
 }

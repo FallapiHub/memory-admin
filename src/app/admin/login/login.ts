@@ -5,6 +5,8 @@ import { PasswordModule } from 'primeng/password';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {HttpClient, HttpClientModule } from '@angular/common/http';
+import {AggregateService} from '../../services/aggregate-service';
+import {LoginService} from '../../services/login.service';
 
 
 @Component({
@@ -19,20 +21,13 @@ export class Login {
   password: string | undefined;
 
 
-  private apiUrl: string = 'http://localhost:8000/memory/login';
-  constructor(private http: HttpClient) {}
+  constructor(private LoginService: LoginService, private AggregateService: AggregateService) {}
 
   logInAsAdmin():void {
-    const payload = {
-      username: this.username,
-      password: this.password
-    };
+    if (!this.username || !this.password) return;
 
-    this.http.post<{ token: string }>(this.apiUrl, payload, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).subscribe({
+
+    this.LoginService.logInAsAdmin(this.username, this.password).subscribe({
       next: (res) => {
         console.log('Login success:', res);
         localStorage.setItem('jwt', res.token);
@@ -43,13 +38,7 @@ export class Login {
   }
 
   checkAdmin():void{
-      this.http.get("http://localhost:8000/admin/aggregate", {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-          }
-        }
-      ).subscribe({
+      this.AggregateService.getAggregateData().subscribe({
         next: (res) => {
           console.log('Login success:', res);
         },

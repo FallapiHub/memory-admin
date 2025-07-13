@@ -5,6 +5,7 @@ import {ProgressSpinner} from 'primeng/progressspinner';
 import {ChartData} from '../../interfaces/chart-data';
 import {AggregateData} from '../../interfaces/aggregate-data';
 import {ApiData} from '../../interfaces/api-data';
+import {AggregateService} from '../../services/aggregate-service';
 
 
 @Component({
@@ -15,8 +16,6 @@ import {ApiData} from '../../interfaces/api-data';
   styleUrl: './api-chart.css'
 })
 export class ApiChart {
-  private apiUrl: string = 'http://localhost:8000/admin/aggregate';
-  private http: HttpClient = inject(HttpClient);
   dataLoaded: boolean = false;
 
 
@@ -52,26 +51,20 @@ export class ApiChart {
   };
 
   fetchData(): void {
-    this.http.get(this.apiUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        }
-      }
-    ).subscribe((res) => {
-      console.log(res);
-      const values: AggregateData = Object.values(res) as AggregateData;
-      const apiStats: ApiData[] = values[2];
+    this.AggregateService.getAggregateData().subscribe({
+      next: (res: AggregateData) => {
+        const values = Object.values(res) as AggregateData;
+        const apiStats: ApiData[] = values[2];
 
-      this.data.labels = apiStats.map(entry => entry.api);
-      this.data.datasets[0].data = apiStats.map(entry => entry.aantal);
-
-      this.dataLoaded = true;
-
-    })
+        this.data.labels = apiStats.map(entry => entry.api);
+        this.data.datasets[0].data = apiStats.map(entry => entry.aantal);
+        this.dataLoaded = true;
+      },
+      error: (err) => console.error('Error loading data:', err)
+    });
   }
 
-  constructor() {
+  constructor(private AggregateService: AggregateService) {
     this.fetchData();
   }
 }

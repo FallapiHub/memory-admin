@@ -3,6 +3,8 @@ import { TableModule } from 'primeng/table';
 import {HttpClient} from '@angular/common/http';
 import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
 import {DateData} from '../../interfaces/date-data';
+import {DatesService} from '../../services/dates.service';
+
 
 @Component({
   selector: 'app-dates-table',
@@ -14,21 +16,12 @@ import {DateData} from '../../interfaces/date-data';
   styleUrl: './dates-table.css'
 })
 export class DatesTable {
-  private apiUrl: string = 'http://localhost:8000/admin/dates';
-  private http: HttpClient = inject(HttpClient);
-
   dataLoaded: boolean = false;
   dates: Array<{ date: string; count: number }>  = [];
 
 
   fetchData(): void {
-    this.http.get<DateData>(this.apiUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        }
-      }
-    ).subscribe({
+    this.DatesService.getDates().subscribe({
       next: (res) => {
         console.log(res);
         this.dates = Object.entries(res).map(([date, count]) => ({
@@ -43,8 +36,7 @@ export class DatesTable {
     });
   }
 
-  constructor() {
+  constructor(private DatesService: DatesService) {
     this.fetchData();
   }
-
 }
