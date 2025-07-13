@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import {HttpClient} from '@angular/common/http';
 import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
+import {DateData} from '../../interfaces/date-data';
 
 @Component({
   selector: 'app-dates-table',
@@ -13,15 +14,15 @@ import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
   styleUrl: './dates-table.css'
 })
 export class DatesTable {
-  private apiUrl = 'http://localhost:8000/admin/dates';
-  private http = inject(HttpClient);
+  private apiUrl: string = 'http://localhost:8000/admin/dates';
+  private http: HttpClient = inject(HttpClient);
 
-  dataLoaded = false;
-  dates: any[] = [];
+  dataLoaded: boolean = false;
+  dates: Array<{ date: string; count: number }>  = [];
 
 
-  fetchData() {
-    this.http.get(this.apiUrl, {
+  fetchData(): void {
+    this.http.get<DateData>(this.apiUrl, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('jwt')

@@ -2,6 +2,8 @@ import {Component, inject} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import {HttpClient} from '@angular/common/http';
 import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
+import { UserData } from '../../interfaces/user-data';
+
 
 
 
@@ -15,14 +17,14 @@ import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
   styleUrl: './user-table.css'
 })
 export class UserTable {
-  private apiUrl = 'http://localhost:8000/admin/players';
-  private http = inject(HttpClient);
+  private apiUrl: string = 'http://localhost:8000/admin/players';
+  private http: HttpClient = inject(HttpClient);
 
-  dataLoaded = false;
-  users: any[] = [];
+  dataLoaded: boolean = false;
+  users: UserData[] = [];
 
 
-  fetchData() {
+  fetchData(): void {
     this.http.get(this.apiUrl, {
         headers: {
           'Content-Type': 'application/json',

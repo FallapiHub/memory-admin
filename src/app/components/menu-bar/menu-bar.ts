@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
+import {MenuItem} from '../../interfaces/menu-item';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { MenubarModule } from 'primeng/menubar';
   styleUrl: './menu-bar.css'
 })
 export class MenuBar {
-  items = [
+  items: MenuItem[] = [
     {
       label: 'Home',
       routerLink: [''],

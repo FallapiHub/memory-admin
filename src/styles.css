@@ -5,3 +5,10 @@
   font-family: arial;
 }
 
+
+@media only screen and (max-width: 900px) {
+  h1 {
+    text-align: center;
+    width: 100%;
+  }
+}

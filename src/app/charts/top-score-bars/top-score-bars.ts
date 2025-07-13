@@ -2,6 +2,8 @@ import {Component, inject} from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {ProgressSpinner} from 'primeng/progressspinner';
+import {ChartData} from '../../interfaces/chart-data';
+import {ScoreData} from '../../interfaces/score-data';
 
 
 @Component({
@@ -11,12 +13,12 @@ import {ProgressSpinner} from 'primeng/progressspinner';
   styleUrl: './top-score-bars.css'
 })
 export class TopScoreBars {
-  private apiUrl = 'http://localhost:8000/memory/top-scores';
-  private http = inject(HttpClient);
-  dataLoaded = false;
+  private apiUrl: string = 'http://localhost:8000/memory/top-scores';
+  private http: HttpClient = inject(HttpClient);
+  dataLoaded: boolean = false;
 
 
-  data: any = {
+  data: ChartData = {
     labels: [],
     datasets: [
       {
@@ -50,7 +52,7 @@ export class TopScoreBars {
       }
     ).subscribe((res) => {
       console.log(res);
-      const scores = res as Array<{ username: string, score: number }>;
+      const scores: ScoreData[] = res as ScoreData[];
       this.data.labels = scores.map(entry => entry.username);
       this.data.datasets[0].data = scores.map(entry => entry.score);
 
