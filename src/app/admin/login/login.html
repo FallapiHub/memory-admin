@@ -1,17 +1,20 @@
-<p-inputgroup>
-  <p-inputgroup-addon>
-    <i class="pi pi-user"></i>
-  </p-inputgroup-addon>
-  <input pInputText [(ngModel)]="username" placeholder="Username"/>
-</p-inputgroup>
+<div class="container">
+  <p-inputgroup>
+    <p-inputgroup-addon>
+      <i class="pi pi-user"></i>
+    </p-inputgroup-addon>
+    <input pInputText [(ngModel)]="username" placeholder="Username"/>
+  </p-inputgroup>
 
-<p-inputgroup>
-  <p-inputgroup-addon>
-    <i class="pi pi-user"></i>
-  </p-inputgroup-addon>
-  <p-password [(ngModel)]="password" [feedback]="false" placeholder="Password" />
-</p-inputgroup>
+  <p-inputgroup>
+    <p-inputgroup-addon>
+      <i class="pi pi-user"></i>
+    </p-inputgroup-addon>
+    <p-password [(ngModel)]="password" [feedback]="false" placeholder="Password" />
+  </p-inputgroup>
 
-<p id="notification"></p>
-<button (click)="logInAsAdmin()" type="button" class="generalbutton" id="submit">Log in</button>
+  <button (click)="logInAsAdmin()" type="button" class="generalbutton" id="submit">Log in</button>
+  <p-toast></p-toast>
+</div>
+
 
