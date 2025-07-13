@@ -1,0 +1,7 @@
+.charts {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  justify-self: center;
+  width: 80%;
+}

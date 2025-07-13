@@ -3,23 +3,21 @@ import { TableModule } from 'primeng/table';
 import {HttpClient} from '@angular/common/http';
 import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
 
-
-
 @Component({
-  selector: 'app-user-table',
+  selector: 'app-dates-table',
   imports: [
     TableModule,
     ProgressSpinner
   ],
-  templateUrl: './user-table.html',
-  styleUrl: './user-table.css'
+  templateUrl: './dates-table.html',
+  styleUrl: './dates-table.css'
 })
-export class UserTable {
-  private apiUrl = 'http://localhost:8000/admin/players';
+export class DatesTable {
+  private apiUrl = 'http://localhost:8000/admin/dates';
   private http = inject(HttpClient);
 
   dataLoaded = false;
-  users: any[] = [];
+  dates: any[] = [];
 
 
   fetchData() {
@@ -32,7 +30,10 @@ export class UserTable {
     ).subscribe({
       next: (res) => {
         console.log(res);
-        this.users = Object.values(res);
+        this.dates = Object.entries(res).map(([date, count]) => ({
+          date,
+          count
+        }));
         this.dataLoaded = true;
       },
       error: (err) => {

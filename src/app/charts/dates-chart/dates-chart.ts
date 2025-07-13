@@ -5,14 +5,13 @@ import {ProgressSpinner} from 'primeng/progressspinner';
 
 
 @Component({
-  selector: 'app-api-chart',
-  standalone: true,
+  selector: 'app-dates-chart',
   imports: [ChartModule, HttpClientModule, ProgressSpinner],
-  templateUrl: './api-chart.html',
-  styleUrl: './api-chart.css'
+  templateUrl: './dates-chart.html',
+  styleUrl: './dates-chart.css'
 })
-export class ApiChart {
-  private apiUrl = 'http://localhost:8000/admin/aggregate';
+export class DatesChart {
+  private apiUrl = 'http://localhost:8000/admin/dates';
   private http = inject(HttpClient);
   dataLoaded = false;
 
@@ -21,16 +20,8 @@ export class ApiChart {
     labels: [],
     datasets: [
       {
-        label: 'API usage',
+        label: 'Amount of Games',
         data: [],
-        backgroundColor: [
-          '#f87171',
-          '#60a5fa',
-          '#facc15',
-          '#34d399',
-          '#a78bfa',
-          '#fb923c'
-        ]
       }
     ]
   };
@@ -43,7 +34,7 @@ export class ApiChart {
       },
       title: {
         display: true,
-        text: 'Games per API'
+        text: 'Games per Date'
       }
     }
   };
@@ -57,14 +48,9 @@ export class ApiChart {
       }
     ).subscribe((res) => {
       console.log(res);
-      const values = Object.values(res);
-      const apiStats = values[2] as Array<{ api: string; aantal: number }>;
+      this.data.labels = Object.keys(res);
+      this.data.datasets[0].data = Object.values(res);
 
-      this.data.labels = apiStats.map(entry => entry.api);
-      this.data.datasets[0].data = apiStats.map(entry => entry.aantal);
-      console.log('Chart data:', this.data);
-      console.log('Chart data.data:', this.data.data);
-      console.log('Chart data.labels:', this.data.labels);
 
       this.dataLoaded = true;
 

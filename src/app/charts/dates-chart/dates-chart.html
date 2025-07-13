@@ -1,6 +1,5 @@
 @if(dataLoaded){
-  <p-chart type="doughnut" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
+  <p-chart type="line" [data]="data" [options]="options" class="h-[30rem]" />
 } @else {
   <p-progress-spinner ariaLabel="loading" class="w-full md:w-[30rem]"/>
 }
-
